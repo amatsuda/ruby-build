@@ -1131,7 +1131,11 @@ list_definitions() {
 
 sort_versions() {
   sed 'h; s/[+-]/./g; s/.p\([[:digit:]]\)/.z\1/; s/$/.z/; G; s/\n/ /' | \
-    LC_ALL=C sort -t. -k 1,1 -k 2,2n -k 3,3n -k 4,4n -k 5,5n | awk '{print $2}'
+    LC_ALL=C sort -t. -k 1,1 -k 2,2n -k 3,3n -k 4,4n -k 5,5n | reverse | awk '{arr[NR]=$1; split(arr[NR-1],a,".");split($1,b,".");if ((b[1] == "2") && (b[2] != "0")) { if (a[2] != b[2]) { print $2 }} else if ((b[1] == "rbx") && (b[2] == "3")) { if (!((a[1] == "rbx") && (a[2] == "3"))) print $2 } else if ((a[1] != b[1]) || (a[2] != b[2]) || (a[3] != b[3])) print $2}' | reverse
+}
+
+reverse() {
+  sed '1!G;h;$!d'
 }
 
 
